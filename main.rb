@@ -1,6 +1,7 @@
 require 'dotenv/load'
 require 'byebug'
 require_relative './lib/github'
+require_relative './lib/zenhub'
 
 
 HeroNameQuery = Github::Client.parse <<-'GRAPHQL'
