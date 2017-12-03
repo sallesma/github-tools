@@ -3,28 +3,11 @@ require 'byebug'
 require_relative './lib/github'
 require_relative './lib/zenhub'
 
+github = Github::Client.new
+zenhub = Zenhub.new(
+  access_token: ENV['ZENHUB_AUTH_TOKEN'],
+  repository_id: ENV['REPOSITORY_ID']
+)
 
-HeroNameQuery = Github::Client.parse <<-'GRAPHQL'
-  query {
-    repository(owner:"octocat", name:"Hello-World") {
-      issues(last:20, states:CLOSED) {
-        edges {
-          node {
-            title
-            url
-            labels(first:5) {
-              edges {
-                node {
-                  name
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-GRAPHQL
-result = Github::Client.query(HeroNameQuery)
-byebug
-puts 'bye'
+puts github.last_5_issues.map(&:to_h)
+puts zenhub.board_data

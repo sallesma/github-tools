@@ -1,20 +1,25 @@
 require 'net/http'
 require 'uri'
 
-module Zenhub
+class Zenhub
   BASE_URL = 'https://api.zenhub.io'
-  PERSONAL_ACCESS_TOKEN = ENV['ZENHUB_AUTH_TOKEN']
-  REPO_ID = ENV['REPO_ID']
 
-  def self.board_data
-    url = File.join(BASE_URL, "/p1/repositories/#{REPO_ID}/board")
+  def initialize(access_token:, repository_id:)
+    @access_token = access_token
+    @repository_id = repository_id
+  end
+
+  def board_data
+    url = File.join(BASE_URL, "/p1/repositories/#{@repository_id}/board")
     get(url)
   end
 
-  def self.get(url)
+  private
+
+  def get(url)
     uri = URI.parse(url)
 
-    request = Net::HTTP::Get.new(uri.to_s, {'X-Authentication-Token' => PERSONAL_ACCESS_TOKEN})
+    request = Net::HTTP::Get.new(uri.to_s, {'X-Authentication-Token' => @access_token})
     https = Net::HTTP.new(uri.host,uri.port)
     https.use_ssl = true
 

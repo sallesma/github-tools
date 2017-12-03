@@ -1,16 +1,19 @@
 require "graphql/client"
 require "graphql/client/http"
+require_relative 'github/api'
+require_relative 'github/queries/issues'
 
 module Github
-  PERSONAL_ACCESS_TOKEN = ENV['GITHUB_AUTH_TOKEN']
+  class Client
+    def last_5_issues
+      response = client.query(Github::Queries::Issues::Query)
+      response.data.repository.issues.edges.map(&:node)
+    end
 
-  HTTP = GraphQL::Client::HTTP.new('https://api.github.com/graphql') do
-    def headers(_context)
-      { "Authorization" => "bearer #{PERSONAL_ACCESS_TOKEN}" }
+    private
+
+    def client
+      @client ||= Github::Api::Client
     end
   end
-
-  Schema = GraphQL::Client.load_schema(HTTP)
-
-  Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
 end
