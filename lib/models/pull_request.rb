@@ -1,5 +1,6 @@
 class PullRequest
-  attr_reader :number, :url, :title, :created_at, :merged_at, :closed_at
+  FIELDS = [:number, :url, :title, :created_at, :merged_at, :closed_at]
+  attr_reader(*FIELDS)
 
   def initialize(github_params: {})
     @number = github_params['number']
@@ -8,5 +9,13 @@ class PullRequest
     @created_at = github_params['createdAt']
     @merged_at = github_params['mergedAt']
     @closed_at = github_params['closedAt']
+  end
+
+  def self.csv_header
+    FIELDS
+  end
+
+  def to_csv
+    FIELDS.map { |field| self.send(field) }
   end
 end

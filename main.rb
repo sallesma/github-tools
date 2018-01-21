@@ -3,6 +3,7 @@ require 'byebug'
 require_relative './lib/github'
 require_relative './lib/zenhub'
 require_relative './lib/models/pull_request'
+require_relative './lib/csv_output'
 
 github = Github::Client.new
 zenhub = Zenhub.new(
@@ -10,5 +11,8 @@ zenhub = Zenhub.new(
   repository_id: ENV['REPOSITORY_ID']
 )
 
-puts github.pull_requests.map{ |result| PullRequest.new(github_params: result.to_h) }
+pull_requests = github.pull_requests.map{ |result| PullRequest.new(github_params: result.to_h) }
 # puts zenhub.board_data
+
+CsvOutput.new(PullRequest, pull_requests).write_to_file
+puts "done."
