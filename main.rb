@@ -9,5 +9,5 @@ zenhub = Zenhub.new(
   repository_id: ENV['REPOSITORY_ID']
 )
 
-puts github.last_5_issues.map(&:to_h)
-puts zenhub.board_data
+puts github.pull_requests.map(&:to_h)
+# puts zenhub.board_data
