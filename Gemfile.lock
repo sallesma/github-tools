@@ -20,6 +20,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     builder (3.2.3)
+    business_time (0.9.3)
+      activesupport (>= 3.2.0)
+      tzinfo
     byebug (9.1.0)
     concurrent-ruby (1.0.5)
     crass (1.0.3)
@@ -67,6 +70,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport
+  business_time
   byebug
   dotenv-rails
   graphql-client

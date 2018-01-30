@@ -15,7 +15,7 @@ module Github
       Query = Github::Api::Client.parse <<-'GRAPHQL'
       query {
         repository(owner: "captaincontrat", name:"captaincontrat") {
-          pullRequests(last:5) {
+          pullRequests(last:50) {
             edges {
               node {
                 ...Github::Queries::PullRequests::PullRequestFragment
